@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+{# Le template index.html.twig hérite de notre gabari de base 'base.html.twig' (header + footer + liens CSS etc...) #}
+
+{# démarrer Symfony terminal : php -S 127.0.0.1:8000 -t public #}
+
+{# Le bloc 'title' apparait dans l'onglet du navigateur #}
+{% block title %}Blog Symfony | Liste des articles {% endblock %}
+
+{# le bloc body fait référence au bloque body déclaré dans le fichier base.html.twig #}
+{# Le contenu du bloc 'body' est envoyé dans le bloc body du fichier bas.html.twig #}
+{% block body %}
+
+    <h1 class="display-4 text-center my-4">Liste des articles</h1>
+
+    <div class="row d-flex justify-content-center">
+
+        {# for est une boucle TWIG, une commande TWIG #}
+        {# la variable 'articles' provient de la méthode index() du controller 'BlogController', elle contient tous les articles selectionnés en BDD #}
+        {# Nous sommes obligé de boucler puisque nous avons selectionné 10 articles en BDD #}
+        {# newArticle est une variable de récéption que nous déclarons dans la boucle FOR et qui receptionne un article par tour de boucle #}
+
+        {% for newArticle in articles %}
+
+            <div class="col-md-3 border border-secondary rounded mr-5 mb-5 text-center">
+
+                <img src="{{ newArticle.image }}" alt="{{ newArticle.title }}" class="col-md-12 rounded"><hr>
+
+                <h2>{{ newArticle.title }}</h2>
+
+                <p>{{ newArticle.content|slice(3,200)|raw }}...</p><hr>
+                {# slice(3,200) : fonction TWIG qui retourne une partie de la chaine de caractères #}
+
+                <p>Posté le {{ newArticle.createdAt|date('d/m/Y') }} à {{ newArticle.createdAt|date('H:i:s') }}</p><hr>
+
+                <p><a class="btn btn-info" href="{{ path('blog_show', {'id': newArticle.id }) }}" role="button">Voir le détail &raquo;</a></p>
+                {# On ajoute un 2ème paramètre à la méthode path() de TWIG afin de transmettre l'id de l'article dans l'URL #}
+            </div>
+
+            {# sans le filtre TWIG raw, mes balises <p></p> s'affichent, nous utilisons ce filtre pour l'affichage brut #}
+            {# date() : filtre twig qui permet d'afficher la dte et l'heure #}
+            {# newArticle.createdAt : la BDD renvoie un objet DateTime, il n'est pas possible de convertir un objet en une cahine de caractères #}
+
+        {% endfor %}
+
+    </div>
+
+{% endblock %}

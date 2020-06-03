@@ -1,0 +1,45 @@
+{% extends "base.html.twig" %}
+{# On hérite du template 'base.html.twig' #}
+
+{# On appel le block body du template 'base.html.twig' #}
+{# tout le contenu du block body sera envoyé dans le template 'base.html.twig' #}
+{% block body %}
+
+    <h1 class="display-4 text-center my-4">Détails de l'article</h1>
+
+    <div class="col-md-12 border border-secondary rounded mr-1 mb-5 text-center">
+        <img src="{{ article.image|replace({"250": "1000/300"}) }}" alt="" class=""><hr>
+        <h2>{{ article.title }}</h2>
+        <p>{{ article.content|raw }}</p><hr>
+        <p class="text-right">Posté le {{ article.createdAt|date('d/m/Y') }} à {{ article.createdAt|date('H:i:s') }} dans la catégorie <strong>{{ article.category.title }}</strong></p>
+        {# Avec les relations entre les tables, nous avons maintenant accès la catégorie liè à l'article et nous avons aussi accès aux commentaires liés à l'article (relation bi-directionnelle : via l'entitée Article nous avons accès à l'entité Category et Comment puisque ces entités sont reliées entre elles) #}
+    </div>
+
+    {# Pensez à prévoir un lien qui renvoi à la liste des articles #}
+    <a href="{{ path('blog') }}" class="btn btn-primary mb-3">Retour aux articles</a>
+
+    <h2 class="text-center">Commentaires</h2>
+
+    <div class="col-md-12">
+
+        {# Nous avons accès aux commentaires de l'article via l'entité Article #}
+        {# comment : variable de réception (déclarée ici) qui receptionne une ligne de commentaire par tour de boucle #}
+        {# article.comments : on pointe sur l'indice 'comments' de l'objet 'article' qui contient tout les commentaires liés à l'article #}
+        {% for comment in article.comments %}
+            
+            <div class="row border rounded mb-2">
+                <div class="col-md-4">
+                    <span>{{ comment.author }}</span> 
+                    <small class="font-italic">( {{ comment.createdAt|date('d/m/Y à H:i:s') }} )</small>
+                </div>
+                <div class="col-md-8">
+                    <p>{{ comment.content|raw }}</p>
+                </div>
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+    
+{% endblock %}
