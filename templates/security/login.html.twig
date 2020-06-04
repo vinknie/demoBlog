@@ -4,10 +4,20 @@
 
     <h1 class="display-4 text-center my-4">Identifiez-vous</h1>
 
+    {# Si il y a une erreur dans les indetifiants de connexion, alors on entre dans le IF et on afficle le message d'erreur #}
+    {# Error: variable TWIG qui vient du controller SecurityController #}
+    {% if error %}
+
+        <p class="bg-danger text-white p-2 col-md-5 mx-auto rounded">{{ error.messageKey|trans(error.messageData,'security') }}</p>
+        {# trans(error.messageData, 'security') : on indique a TWIG que la traduction du message d'erreur 'ivalid credentials." se trouve dans le fichier 'translations/security.en.php #}
+        
+    {% endif %}
     <form method="post" class="col-md-5 mx-auto" action="{{ path('security_login') }}">
         <div class="form-group">
             <label for="_username">Email</label>
-            <input type="text" class="form-control" id="_username" name="_username">
+            <input type="text" class="form-control" id="_username" name="_username" value="{{ last_username }}">
+            {# On stock dans l'attribut value le dernier Email posté par l'utilisateur en Cas d'erreur d'indentifiant #}
+            {# last_username : variable qui vient du controller SecurityController #}
         </div>
         <div class="form-group">
             <label for="_password">Mot de passe</label>

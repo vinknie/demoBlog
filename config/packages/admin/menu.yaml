@@ -1,0 +1,15 @@
+easy_admin:
+  design:
+    brand_color: "#1ABC9C"
+
+    menu:
+      - label: "BlogSymfony"
+        icon: "newspaper-o"
+        children:
+          - { entity: "Article", icon: "folder-open", label: "Articles" }
+          - { entity: "Category", icon: "folder-open", label: "Catégories" }
+
+      - label: "Acces"
+        icon: "user"
+        children:
+          - { entity: "User", icon: "folder-open", label: "Utilisateurs" }
