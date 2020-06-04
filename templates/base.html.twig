@@ -30,8 +30,6 @@
                 </li>
                 <li class="nav-item active">
                     <a class="nav-link" href="{{ path('blog') }}">Articles</a>
-                    {# path() : fonction TWIG permettant de générer une URL en fonction du nom de la route envoyer en argument #}
-                    {# le nom de la route 'blog' est déclarée dans le controller 'BlogController' et est rattaché à la méthode index() #}
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Catégories</a>
@@ -41,12 +39,47 @@
                         <a class="dropdown-item" href="#">Sport</a>
                     </div>
                 </li>
+
+                {% if is_granted('ROLE_ADMIN') %}
+                
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{ path('easyadmin') }}">BACKOFFICE</a>    
+                </li>
+
+                {% endif %}
+
+                {# Si l'internaute n'est pas connecté, on lui propose de s'inscrire ou de s'identifier #}
+                {% if not app.user %}
+
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{ path('security_login') }}">Identifiez-vous</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{ path('security_registration') }}">Créer votre Compte</a>    
+                </li>
+
+                {% endif %}
+
+                {# app : variable predefinie en TWIG qui contient beaucoup de variable d'environnements ($_POST,$_GET,$_SESSION ETC..#}
+                {# app.user : retourne les finformations de la session en cours , c'est a dire les informatiosn de l'utilisateur qui est connecté #}
+
+                {# Si app.user renvoi TRUE, alors l'internaute est connecté, on entre dans le IF, on lui propose le lien 'deconnexion' #}
+                {% if app.user %}
+
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{ path('security_logout') }}">Deconnexion</a>    
+                </li>
+
+                {% endif %}
+                
                 </ul>
                 <form class="form-inline my-2 my-md-0">
                 <input class="form-control" type="text" placeholder="Search">
                 </form>
             </div>
-        </nav>
+        </nav> 
+
+        {# {{ dump(app.user) }} #}
 
         <div class="container mon-conteneur">
         {% block body %}
@@ -55,7 +88,7 @@
         </div>
 
         <footer class="bg-secondary py-4 text-center text-white">
-            &copy; 2020 - Grégory LACROIX - C'est MON blog Symfony !!! Pas touche !!!
+            &copy; 2020 - KNIEWALLNER VINCENT - COPYRIGHT ! 
         </footer>
 
         {% block javascripts %}

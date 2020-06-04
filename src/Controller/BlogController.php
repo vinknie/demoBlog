@@ -44,7 +44,7 @@ class BlogController extends AbstractController
 
         return $this->render('blog/index.html.twig', [
             'controller_name' => 'BlogController',
-            'articles' => $articles 
+            'articles' => $articles
         ]);
         // on envoie les articles selectionnés en BDD directement sur le navigateur dans le template index.html.twig
     }
@@ -72,7 +72,7 @@ class BlogController extends AbstractController
      * @Route("/blog/new", name="blog_create")
      * @Route("/blog/{id}/edit", name="blog_edit") 
      */
-    public function form(Article $article = null, Request $request, EntityManagerInterface $manager) 
+    public function form(Article $article = null, Request $request, EntityManagerInterface $manager)
     {
         // initialement méthode create()
         /*
@@ -118,11 +118,10 @@ class BlogController extends AbstractController
         */
 
         // Si l'objet $article n'est pas rempli, cela veut dire que nous n'avons pas envoyé d'{id} dans l'URL, alors c'est une insertion, on crée un nouvel objet Article
-        if(!$article)
-        {
+        if (!$article) {
             $article = new Article;
         }
-       
+
         // On observe quand remplissant l'objet $article via les setteurs, les getteurs renvoient les données de l'article directement à l'intérieur des champs du formulaire
         // $article->setTitle("Titre à la con")
         //         ->setContent("Contenu de l'article à la con");
@@ -140,21 +139,20 @@ class BlogController extends AbstractController
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) // si le formaulaire est soumit et est valide
+        if ($form->isSubmitted() && $form->isValid()) // si le formaulaire est soumit et est valide
         {
             // Si l'article ne possède pas d'{id}, cela veut dire que ce n'est pas une modifiaction, alors on appel le setteur de la date de création de l'article 
             // Si c'est une modification, l'article possède déjà un id, alors on ne modifie pas la date de création de l'article
-            if(!$article->getId())
-            {
+            if (!$article->getId()) {
                 $article->setCreatedAt(new \DateTime());
             }
-            
+
             $manager->persist($article); // persist récupère l'objet $article et prépare lma requete d'insertion  
             $manager->flush(); // flush() libère réelement la requete SQL d'insertion
 
             // On redirige après insertion vers le détail de l'article que nous venons d'insérer
             return $this->redirectToRoute('blog_show', [
-                   'id' => $article->getId()
+                'id' => $article->getId()
             ]);
         }
 
@@ -166,7 +164,7 @@ class BlogController extends AbstractController
 
 
     // show() : méthode permettant d'afficher le détail d'1 article
-                    
+
     /**
      * @Route("/blog/{id}", name="blog_show")
      */
@@ -208,7 +206,6 @@ class BlogController extends AbstractController
                     doctrine (resultat requete)
         */
     }
-
 }
 
 /*
@@ -227,5 +224,3 @@ class BlogController extends AbstractController
 
     Nous devons fournir à la méthode index() en argument, un objet issu de la classe ArticleRepository
 */
-
-
